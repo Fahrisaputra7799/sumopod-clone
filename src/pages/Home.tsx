@@ -1,24 +1,9 @@
 import { Link } from "react-router-dom";
-import { useState } from "react";
 import { useAuth } from "../context/AuthContext";
-import { templates } from "../components/Template";
 
 export default function Home() {
   const { user } = useAuth();
 
-  const categories = [
-    "All",
-    "Business",
-    "Productivity",
-    "Entertainment",
-    "Communication",
-  ];
-  const [selectedCategory, setSelectedCategory] = useState("All");
-
-  const filteredTemplates =
-    selectedCategory === "All"
-      ? templates
-      : templates.filter((template) => template.category === selectedCategory);
 
   return (
     <main className="flex flex-col items-center justify-center text-center">

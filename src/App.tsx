@@ -3,29 +3,21 @@ import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Templates from './pages/Template';
-import Dashboard from './pages/Dashboard';
-import { RequireAuth } from './components/ProtectedRoute';
 
 export default function App() {
   return (
     <AuthProvider>
       <Router>
-        <Layout>
-          <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/templates" element={<Templates />} />
-            <Route
-              path="/dashboard"
-              element={
-                <RequireAuth>
-                  <Dashboard />
-                </RequireAuth>
-              }
-            />
-            {/* 404 Page */}
-            <Route
-              path="*"
-              element={
+        <Routes>
+          {/* Routes with Layout (navbar) */}
+          <Route path="/" element={<Layout><Home /></Layout>} />
+          <Route path="/templates" element={<Layout><Templates /></Layout>} />
+
+          {/* 404 Page */}
+          <Route
+            path="*"
+            element={
+              <Layout>
                 <div className="min-h-screen flex items-center justify-center">
                   <div className="text-center">
                     <h1 className="text-6xl font-bold text-gray-900 mb-4">404</h1>
@@ -38,10 +30,10 @@ export default function App() {
                     </a>
                   </div>
                 </div>
-              }
-            />
-          </Routes>
-        </Layout>
+              </Layout>
+            }
+          />
+        </Routes>
       </Router>
     </AuthProvider>
   );
