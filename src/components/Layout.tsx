@@ -67,9 +67,11 @@ export default function Layout({ children }: { children: React.ReactNode }) {
 
           {/* Right: Buttons */}
           <div className="flex gap-2">
-            <button className="text-black bg-gray-200 text-sm px-4 py-2 rounded-md hover:bg-gray-300 transition cursor-pointer">
+            <Link
+            to={"/login"}
+            className="text-black bg-gray-200 text-sm px-4 py-2 rounded-md hover:bg-gray-300 transition cursor-pointer">
               Login
-            </button>
+            </Link>
             <button className="bg-blue-600 text-white text-sm px-4 py-2 rounded-md hover:bg-blue-700 transition cursor-pointer">
               Get Started
             </button>

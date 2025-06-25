@@ -3,6 +3,8 @@ import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Templates from './pages/Template';
+import Login from './pages/Login';
+import Dashboard from './pages/Dashboard';
 
 export default function App() {
   return (
@@ -12,6 +14,8 @@ export default function App() {
           {/* Routes with Layout (navbar) */}
           <Route path="/" element={<Layout><Home /></Layout>} />
           <Route path="/templates" element={<Layout><Templates /></Layout>} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/dashboard" element={<Dashboard />} />
 
           {/* 404 Page */}
           <Route
