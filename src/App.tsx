@@ -3,6 +3,8 @@ import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import Home from './pages/Home';
 import Templates from './pages/Template';
+import Dashboard from './pages/Dashboard';
+import { RequireAuth } from './components/ProtectedRoute';
 
 export default function App() {
   return (
@@ -12,6 +14,14 @@ export default function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/templates" element={<Templates />} />
+            <Route
+              path="/dashboard"
+              element={
+                <RequireAuth>
+                  <Dashboard />
+                </RequireAuth>
+              }
+            />
             {/* 404 Page */}
             <Route
               path="*"

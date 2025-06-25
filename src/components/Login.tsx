@@ -67,31 +67,38 @@ export default function Login({ onLogin, onClose }: LoginProps) {
   // Handle submit
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!validateForm()) {
       return;
     }
 
     setIsLoading(true);
-    
+
     // Simulasi API call
     try {
       await new Promise(resolve => setTimeout(resolve, 1500));
-      
+
       // Simulasi login berhasil
       const userData = {
         email: formData.email,
         name: formData.email.split('@')[0] // Ambil nama dari email
       };
 
+      // Call onLogin first
       onLogin(userData);
 
+      // Close modal
+      onClose();
+
       // Navigate to dashboard after successful login
-      setTimeout(() => {
-        navigate('/dashboard');
-      }, 100);
+      navigate('/dashboard');
     } catch (error) {
       console.error('Login failed:', error);
+      // Show error to user
+      setErrors(prev => ({
+        ...prev,
+        password: 'Login failed. Please try again.'
+      }));
     } finally {
       setIsLoading(false);
     }
@@ -103,17 +110,26 @@ export default function Login({ onLogin, onClose }: LoginProps) {
       email: 'demo@sumopod.com',
       name: 'Demo User'
     };
+
+    // Call onLogin first
     onLogin(demoUser);
 
+    // Close modal
+    onClose();
+
     // Navigate to dashboard after demo login
-    setTimeout(() => {
-      navigate('/dashboard');
-    }, 100);
+    navigate('/dashboard');
   };
 
   return (
-    <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white rounded-lg shadow-xl w-full max-w-md">
+    <div
+      className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center z-50 p-4"
+      onClick={onClose}
+    >
+      <div
+        className="bg-white rounded-lg shadow-xl w-full max-w-md"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b">
           <h2 className="text-2xl font-bold text-gray-900">Login to SumoPod</h2>
@@ -159,7 +175,7 @@ export default function Login({ onLogin, onClose }: LoginProps) {
               name="password"
               value={formData.password}
               onChange={handleInputChange}
-              className={`w-full px-3 py-2 border rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full px-3 py-2 border rounded-md text-black textbl focus:outline-none focus:ring-2 focus:ring-blue-500 ${
                 errors.password ? 'border-red-500' : 'border-gray-300'
               }`}
               placeholder="Enter your password"

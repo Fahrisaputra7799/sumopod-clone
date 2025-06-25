@@ -4,13 +4,12 @@ import { useAuth } from '../context/AuthContext';
 import Login from './Login';
 
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const { user, logout } = useAuth();
+  const { user, login, logout } = useAuth();
   const [showLogin, setShowLogin] = useState(false);
   const location = useLocation();
 
   // Function untuk handle login
   const handleLogin = (userData: { email: string; name: string }) => {
-    const { login } = useAuth();
     login(userData);
     setShowLogin(false);
   };
