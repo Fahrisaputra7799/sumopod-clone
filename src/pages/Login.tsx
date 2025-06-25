@@ -14,16 +14,16 @@ export default function Login() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8">
+    <div className="bg-gray-50 flex items-center justify-center py-12 px-4" style={{minHeight: '100vh', minWidth: '1024px'}}>
+      <div className="w-full" style={{maxWidth: '400px', gap: '32px', display: 'flex', flexDirection: 'column'}}>
         {/* Back to Home Button */}
         <div className="flex justify-start">
           <Link
             to="/"
-            className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium transition-colors group"
+            className="inline-flex items-center text-blue-600 hover:text-blue-700 font-medium"
           >
             <svg
-              className="w-4 h-4 mr-2 transition-transform group-hover:-translate-x-1"
+              className="w-4 h-4 mr-2"
               fill="none"
               stroke="currentColor"
               viewBox="0 0 24 24"
@@ -39,7 +39,7 @@ export default function Login() {
           <p className="text-gray-600">Please sign in to your account</p>
         </div>
 
-        <div className="bg-white p-8 rounded-xl shadow-lg border border-gray-200">
+        <div className="bg-white p-8 border border-gray-200" style={{borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'}}>
           <LoginForm
             onLoginSuccess={handleLoginSuccess}
             onLoginError={handleLoginError}

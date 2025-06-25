@@ -6,14 +6,15 @@ export default function Home() {
 
 
   return (
-    <main className="flex flex-col items-center justify-center text-center">
+    <main className="flex flex-col items-center justify-center text-center" style={{minWidth: '1024px'}}>
       {/* Hero Section */}
       <section
         id="home"
-        className="min-h-screen w-full px-6 flex items-center justify-center bg-white"
+        className="w-full px-6 flex items-center justify-center bg-white"
+        style={{minHeight: '100vh'}}
       >
-        <div className="max-w-4xl w-full text-center">
-          <h1 className="text-5xl md:text-7xl font-bold leading-tight tracking-tight">
+        <div className="w-full text-center" style={{maxWidth: '896px'}}>
+          <h1 className="font-bold leading-tight tracking-tight" style={{fontSize: '4rem'}}>
             <span className="text-blue-600">Deploy your App</span>
             <br />
             <span className="text-black">in 15 Seconds!</span>
@@ -22,16 +23,18 @@ export default function Home() {
             The fastest way to deploy your applications with zero configuration.
             Get your app live in seconds, not hours.
           </p>
-          <div className="mt-8 flex flex-wrap justify-center gap-4">
+          <div className="mt-8 flex justify-center" style={{gap: '16px'}}>
             <Link
               to={user ? "/dashboard" : "/pricing"}
-              className="bg-blue-600 text-white px-6 py-3 rounded-md font-semibold hover:bg-blue-700 transition"
+              className="bg-blue-600 text-white px-6 py-3 font-semibold hover:bg-blue-700"
+              style={{borderRadius: '6px'}}
             >
               {user ? "Go to Dashboard" : "Get Started"}
             </Link>
             <Link
               to="/templates"
-              className="bg-gray-200 text-gray-800 px-6 py-3 rounded-md font-semibold hover:bg-gray-300 transition"
+              className="bg-gray-200 text-gray-800 px-6 py-3 font-semibold hover:bg-gray-300"
+              style={{borderRadius: '6px'}}
             >
               See App Templates
             </Link>
@@ -41,18 +44,18 @@ export default function Home() {
 
       {/* Pricing Section */}
       <section id="pricing" className="w-full py-20 px-6 bg-gray-50">
-        <div className=" mx-auto">
+        <div className="mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
+            <h2 className="font-bold text-gray-900 mb-4" style={{fontSize: '3rem'}}>
               Simple, Transparent Pricing
             </h2>
-            <p className="text-lg text-gray-600 max-w-xl mx-auto p-6">
+            <p className="text-lg text-gray-600 mx-auto p-6" style={{maxWidth: '576px'}}>
               Choose the plan that fits your needs. Start free and scale as you
               grow.
             </p>
           </div>
-          <div className="max-w-120 mx-auto">
-            <div className="bg-white border border-gray-200 rounded-lg py-8 px-8 shadow-sm text-center">
+          <div className="mx-auto" style={{maxWidth: '480px'}}>
+            <div className="bg-white border border-gray-200 py-8 px-8 text-center" style={{borderRadius: '8px', boxShadow: '0 1px 2px 0 rgba(0, 0, 0, 0.05)'}}>
               <h3 className="text-2xl p-2 font-bold text-gray-900 mb-4">
                 Start Today
               </h3>

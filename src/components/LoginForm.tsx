@@ -47,9 +47,9 @@ export function LoginForm({ onLoginSuccess, onLoginError }: LoginFormProps) {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-4">
+    <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
       {errorMsg && (
-        <div className="text-red-500 text-sm bg-red-50 p-3 rounded border border-red-200">
+        <div className="text-red-500 text-sm bg-red-50 p-3 border border-red-200" style={{borderRadius: '6px'}}>
           {errorMsg}
         </div>
       )}
@@ -62,7 +62,8 @@ export function LoginForm({ onLoginSuccess, onLoginError }: LoginFormProps) {
           id="email"
           type="email"
           placeholder="Enter your email"
-          className="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          className="w-full text-black p-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          style={{borderRadius: '8px'}}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
@@ -78,7 +79,8 @@ export function LoginForm({ onLoginSuccess, onLoginError }: LoginFormProps) {
           id="password"
           type="password"
           placeholder="Enter your password"
-          className="w-full text-black p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors"
+          className="w-full text-black p-3 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+          style={{borderRadius: '8px'}}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
@@ -89,7 +91,8 @@ export function LoginForm({ onLoginSuccess, onLoginError }: LoginFormProps) {
       <button
         type="submit"
         disabled={isLoading || !email || !password}
-        className="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed transition-colors font-medium"
+        className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed font-medium"
+        style={{borderRadius: '8px'}}
       >
         {isLoading ? 'Logging in...' : 'Login'}
       </button>
