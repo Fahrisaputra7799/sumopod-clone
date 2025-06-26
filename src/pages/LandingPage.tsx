@@ -1,8 +1,6 @@
 import { Link } from "react-router-dom";
-import { useAuth } from "../context/AuthContext";
 
 export default function Home() {
-  const { user } = useAuth();
 
 
   return (
@@ -25,11 +23,11 @@ export default function Home() {
           </p>
           <div className="mt-8 flex justify-center" style={{gap: '16px'}}>
             <Link
-              to={user ? "/dashboard" : "/pricing"}
+              to="/pricing"
               className="bg-blue-600 text-white px-6 py-3 font-semibold hover:bg-blue-700"
               style={{borderRadius: '6px'}}
             >
-              {user ? "Go to Dashboard" : "Get Started"}
+              Get Started
             </Link>
             <Link
               to="/templates"

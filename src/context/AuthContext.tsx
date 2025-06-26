@@ -1,3 +1,4 @@
+/* eslint-disable react-refresh/only-export-components */
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 
 // Types
@@ -56,10 +57,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, []);
 
-  // Login function
   const login = (userData: User) => {
     try {
-      // Add timestamp and id if not provided
       const userWithMetadata = {
         ...userData,
         id: userData.id || Date.now().toString(),
@@ -76,7 +75,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   };
 
-  // Logout function
   const logout = () => {
     try {
       setUser(null);

@@ -1,18 +1,7 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { LoginForm } from "../components/LoginForm";
 
 export default function Login() {
-  const navigate = useNavigate();
-
-  const handleLoginSuccess = () => {
-    // Redirect to dashboard immediately after successful login
-    navigate("/dashboard");
-  };
-
-  const handleLoginError = (error: string) => {
-    console.error("Login error:", error);
-  };
-
   return (
     <div className="bg-gray-50 flex items-center justify-center py-12 px-4" style={{minHeight: '100vh', minWidth: '1024px'}}>
       <div className="w-full" style={{maxWidth: '400px', gap: '32px', display: 'flex', flexDirection: 'column'}}>
@@ -40,10 +29,7 @@ export default function Login() {
         </div>
 
         <div className="bg-white p-8 border border-gray-200" style={{borderRadius: '12px', boxShadow: '0 10px 15px -3px rgba(0, 0, 0, 0.1)'}}>
-          <LoginForm
-            onLoginSuccess={handleLoginSuccess}
-            onLoginError={handleLoginError}
-          />
+          <LoginForm />
         </div>
       </div>
     </div>

@@ -1,59 +1,12 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
 
-interface LoginFormProps {
-  onLoginSuccess?: () => void;
-  onLoginError?: (error: string) => void;
-}
-
-export function LoginForm({ onLoginSuccess, onLoginError }: LoginFormProps) {
+export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errorMsg, setErrorMsg] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
-
-  // Dummy credentials
-  const dummyUser = {
-    email: 'fhrisaputra7799@gmail.com',
-    password: 'qweasdzxc',
-  };
-
-  const handleLogin = async () => {
-    setIsLoading(true);
-    setErrorMsg('');
-
-    try {
-      // Simulate API call delay
-      await new Promise(resolve => setTimeout(resolve, 1000));
-
-      if (email === dummyUser.email && password === dummyUser.password) {
-        onLoginSuccess?.();
-      } else {
-        const error = 'Email or password is incorrect.';
-        setErrorMsg(error);
-        onLoginError?.(error);
-      }
-    } catch (error) {
-      const errorMessage = 'An error occurred during login.';
-      setErrorMsg(errorMessage);
-      onLoginError?.(errorMessage);
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    handleLogin();
-  };
 
   return (
-    <form onSubmit={handleSubmit} style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
-      {errorMsg && (
-        <div className="text-red-500 text-sm bg-red-50 p-3 border border-red-200" style={{borderRadius: '6px'}}>
-          {errorMsg}
-        </div>
-      )}
-
+    <div style={{display: 'flex', flexDirection: 'column', gap: '16px'}}>
       <div>
         <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
           Email
@@ -66,8 +19,6 @@ export function LoginForm({ onLoginSuccess, onLoginError }: LoginFormProps) {
           style={{borderRadius: '8px'}}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          required
-          disabled={isLoading}
         />
       </div>
 
@@ -83,19 +34,21 @@ export function LoginForm({ onLoginSuccess, onLoginError }: LoginFormProps) {
           style={{borderRadius: '8px'}}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          required
-          disabled={isLoading}
         />
       </div>
 
-      <button
-        type="submit"
-        disabled={isLoading || !email || !password}
-        className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 disabled:bg-blue-400 disabled:cursor-not-allowed font-medium"
-        style={{borderRadius: '8px'}}
+      <Link
+        to="/dashboard"
+        className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 font-medium text-center block"
+        style={{borderRadius: '8px', textDecoration: 'none'}}
       >
-        {isLoading ? 'Logging in...' : 'Login'}
-      </button>
-    </form>
+        Login (Dummy)
+      </Link>
+
+      <div className="text-center text-sm text-gray-500">
+        <p>This is a dummy login form.</p>
+        <p>Click "Login (Dummy)" to go to dashboard.</p>
+      </div>
+    </div>
   );
 }

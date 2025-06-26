@@ -7,11 +7,14 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "test": "echo \"No tests specified\" && exit 0",
+    "preview": "vite preview",
+    "prepare": "husky"
   },
   "dependencies": {
     "@types/react-router-dom": "^5.3.3",
     "flowbite-react": "^0.11.8",
+    "husky": "^9.1.7",
     "mdb-react-ui-kit": "^9.0.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
