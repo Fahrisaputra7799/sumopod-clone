@@ -1,2 +1,2 @@
-# Run linting before commit
+npx lint-staged
 npm run lint
