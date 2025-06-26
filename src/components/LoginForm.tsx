@@ -38,7 +38,7 @@ export function LoginForm() {
       </div>
 
       <Link
-        to="/dashboard"
+        to="/dashboard/services"
         className="w-full bg-blue-600 text-white py-3 hover:bg-blue-700 font-medium text-center block"
         style={{borderRadius: '8px', textDecoration: 'none'}}
       >

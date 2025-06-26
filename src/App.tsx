@@ -5,12 +5,6 @@ import DashboardLayout from './components/DashboardLayout';
 import Home from './pages/LandingPage';
 import Templates from './pages/Template';
 import Login from './pages/Login';
-import Dashboard from './pages/Dashboard';
-import BeliEmas from './pages/BeliEmas';
-import Service from './pages/Service';
-import Ai from './pages/Ai';
-import Billing from './pages/Billing';
-import Profile from './pages/Profile';
 
 // Dashboard Pages
 import DashboardServices from './pages/dashboard/Services';
@@ -19,6 +13,7 @@ import DashboardAffiliate from './pages/dashboard/Affiliate';
 import DashboardBilling from './pages/dashboard/Billing';
 import DashboardSettings from './pages/dashboard/Settings';
 import DashboardSupport from './pages/dashboard/Support';
+import DashboardBeliEmas from './pages/dashboard/BeliEmas';
 
 export default function App() {
   return (
@@ -31,20 +26,13 @@ export default function App() {
           <Route path="/login" element={<Login />} />
 
           {/* Dashboard Routes */}
-          <Route path="/dashboard" element={<Dashboard />} />
           <Route path="/dashboard/services" element={<DashboardLayout><DashboardServices /></DashboardLayout>} />
           <Route path="/dashboard/ai" element={<DashboardLayout><DashboardAI /></DashboardLayout>} />
           <Route path="/dashboard/affiliate" element={<DashboardLayout><DashboardAffiliate /></DashboardLayout>} />
           <Route path="/dashboard/billing" element={<DashboardLayout><DashboardBilling /></DashboardLayout>} />
           <Route path="/dashboard/settings" element={<DashboardLayout><DashboardSettings /></DashboardLayout>} />
           <Route path="/dashboard/support" element={<DashboardLayout><DashboardSupport /></DashboardLayout>} />
-
-          {/* Other Routes */}
-          <Route path="/beli-emas" element={<BeliEmas />} />
-          <Route path="/service" element={<Service />} />
-          <Route path="/ai" element={<Ai />} />
-          <Route path="/billing" element={<Billing />} />
-          <Route path="/profile" element={<Profile />} />
+          <Route path="/dashboard/beli-emas" element={<DashboardLayout><DashboardBeliEmas /></DashboardLayout>} />
 
           {/* 404 Page */}
           <Route

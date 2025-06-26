@@ -8,12 +8,13 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation();
 
   const sidebarItems = [
-    { id: "services", name: "Services", path: "/dashboard/services" },
+    { id: "service", name: "Services", path: "/dashboard/services" },
     { id: "ai", name: "AI", path: "/dashboard/ai" },
     { id: "affiliate", name: "Affiliate", path: "/dashboard/affiliate" },
     { id: "billing", name: "Billing", path: "/dashboard/billing" },
     { id: "settings", name: "Settings", path: "/dashboard/settings" },
-    { id: "support", name: "Support", path: "/dashboard/support" },
+    { id: "beli-emas", name: "Beli Emas", path: "/dashboard/beli-emas" },
+    { id: "support", name: "Support", path: "/dashboard/support" }
   ];
 
   const handleLogout = () => {
@@ -51,18 +52,18 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
           {/* Navigation */}
           <nav className="mb-auto">
             <ul className="space-y-1">
-              {sidebarItems.map((item) => (
-                <li key={item.id}>
+              {sidebarItems.map((menu) => (
+                <li key={menu.id}>
                   <Link
-                    to={item.path}
+                    to={menu.path}
                     className={`w-full flex items-center px-4 py-2 text-left border ${
-                      location.pathname === item.path
+                      location.pathname === menu.path
                         ? "bg-blue-600 text-white border-blue-700"
                         : "bg-gray-100 text-gray-700 border-gray-300 hover:bg-gray-200"
                     }`}
                   >
                     <div>
-                      <div className="font-bold">{item.name}</div>
+                      <div className="font-bold">{menu.name}</div>
                     </div>
                   </Link>
                 </li>
