@@ -9,12 +9,12 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
 
   const sidebarItems = [
     { id: "service", name: "Services", path: "/dashboard/services" },
+    { id: "beli-emas", name: "Beli Emas", path: "/dashboard/beli-emas" },
     { id: "ai", name: "AI", path: "/dashboard/ai" },
     { id: "affiliate", name: "Affiliate", path: "/dashboard/affiliate" },
     { id: "billing", name: "Billing", path: "/dashboard/billing" },
     { id: "settings", name: "Settings", path: "/dashboard/settings" },
     { id: "support", name: "Support", path: "/dashboard/support" },
-    { id: "beli-emas", name: "Beli Emas", path: "/dashboard/beli-emas" },
   ];
 
   function handleLogout() {
