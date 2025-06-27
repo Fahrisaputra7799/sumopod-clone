@@ -28,9 +28,9 @@ function BuyModal({ isOpen, onClose, goldItem }: BuyModalProps) {
   if (!isOpen || !goldItem) return null;
 
   const handleBuy = () => {
+    setQuantity(1);
     alert(`Pembelian berhasil!\n${goldItem.type}\nJumlah: ${quantity} ${goldItem.unit}\nTotal: Rp ${totalPrice.toLocaleString('id-ID')}`);
     onClose();
-    setQuantity(1);
   };
 
   return (
@@ -68,7 +68,7 @@ function BuyModal({ isOpen, onClose, goldItem }: BuyModalProps) {
               type="number"
               min="1"
               value={quantity}
-              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value) || 1))}
+              onChange={(e) => setQuantity(Math.max(1, parseInt(e.target.value)))}
               className="border border-gray-300 text-black px-3 py-1 rounded w-20 text-center"
             />
             <button

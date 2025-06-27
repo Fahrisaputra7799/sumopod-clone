@@ -1,61 +1,90 @@
-/* eslint-disable react-refresh/only-export-components */
-import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
+import { createContext, useContext, useState, useEffect } from 'react'
+import type { ReactNode } from 'react'
 
-// Types
+// ============================================================================
+// TYPES & INTERFACES
+// ============================================================================
+
 export interface User {
-  email: string;
-  name: string;
-  id?: string;
+  email: string
+  name: string
+  id?: string
 }
 
 interface AuthContextType {
-  user: User | null;
-  login: (userData: User) => void;
-  logout: () => void;
-  isLoading: boolean;
+  user: User | null
+  login: (userData: User) => void
+  logout: () => void
+  isLoading: boolean
 }
 
-// Create Context
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
-
-// Custom hook to use auth context
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (context === undefined) {
-    throw new Error('useAuth must be used within an AuthProvider');
-  }
-  return context;
-};
-
-// Auth Provider Props
 interface AuthProviderProps {
-  children: ReactNode;
+  children: ReactNode
 }
 
-// Local Storage Keys
-const USER_STORAGE_KEY = 'sumopod_user';
+interface RequireAuthProps {
+  children: ReactNode
+  fallback?: ReactNode
+}
 
-// Auth Provider Component
-export const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+// ============================================================================
+// CONSTANTS
+// ============================================================================
+
+const USER_STORAGE_KEY = 'sumopod_user'
+
+// ============================================================================
+// CONTEXT CREATION
+// ============================================================================
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined)
+
+// ============================================================================
+// CUSTOM HOOKS
+// ============================================================================
+
+export const useAuth = () => {
+  const context = useContext(AuthContext)
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider')
+  }
+  return context
+}
+
+export const useAuthStatus = () => {
+  const { user, isLoading } = useAuth()
+
+  return {
+    isAuthenticated: !!user,
+    isLoading,
+    user
+  }
+}
+
+// ============================================================================
+// MAIN PROVIDER COMPONENT
+// ============================================================================
+
+export function AuthProvider({ children }: AuthProviderProps) {
+  const [user, setUser] = useState<User | null>(null)
+  const [isLoading, setIsLoading] = useState(true)
 
   // Load user from localStorage on mount
   useEffect(() => {
     try {
-      const savedUser = localStorage.getItem(USER_STORAGE_KEY);
+      const savedUser = localStorage.getItem(USER_STORAGE_KEY)
       if (savedUser) {
-        const parsedUser = JSON.parse(savedUser);
-        setUser(parsedUser);
+        const parsedUser = JSON.parse(savedUser)
+        setUser(parsedUser)
       }
     } catch (error) {
-      console.error('Error loading user from localStorage:', error);
+      console.error('Error loading user from localStorage:', error)
       // Clear invalid data
-      localStorage.removeItem(USER_STORAGE_KEY);
+      localStorage.removeItem(USER_STORAGE_KEY)
     } finally {
-      setIsLoading(false);
+      setIsLoading(false)
     }
-  }, []);
+  }, [])
 
   const login = (userData: User) => {
     try {
@@ -63,29 +92,29 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         ...userData,
         id: userData.id || Date.now().toString(),
         loginTime: new Date().toISOString()
-      };
+      }
 
-      setUser(userWithMetadata);
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userWithMetadata));
-      
+      setUser(userWithMetadata)
+      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userWithMetadata))
+
       // Optional: Track login event
-      console.log('User logged in:', userWithMetadata.email);
+      console.log('User logged in:', userWithMetadata.email)
     } catch (error) {
-      console.error('Error during login:', error);
+      console.error('Error during login:', error)
     }
-  };
+  }
 
   const logout = () => {
     try {
-      setUser(null);
-      localStorage.removeItem(USER_STORAGE_KEY);
-      
+      setUser(null)
+      localStorage.removeItem(USER_STORAGE_KEY)
+
       // Optional: Track logout event
-      console.log('User logged out');
+      console.log('User logged out')
     } catch (error) {
-      console.error('Error during logout:', error);
+      console.error('Error during logout:', error)
     }
-  };
+  }
 
   // Context value
   const value: AuthContextType = {
@@ -93,41 +122,28 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     login,
     logout,
     isLoading
-  };
+  }
 
   return (
     <AuthContext.Provider value={value}>
       {children}
     </AuthContext.Provider>
-  );
-};
-
-// Optional: Auth status hook for conditional rendering
-export const useAuthStatus = () => {
-  const { user, isLoading } = useAuth();
-  
-  return {
-    isAuthenticated: !!user,
-    isLoading,
-    user
-  };
-};
-
-// Optional: Protected route wrapper component
-interface RequireAuthProps {
-  children: ReactNode;
-  fallback?: ReactNode;
+  )
 }
 
-export const RequireAuth = ({ children, fallback }: RequireAuthProps) => {
-  const { isAuthenticated, isLoading } = useAuthStatus();
+// ============================================================================
+// PROTECTED ROUTE COMPONENT
+// ============================================================================
+
+export function RequireAuth({ children, fallback }: RequireAuthProps) {
+  const { isAuthenticated, isLoading } = useAuthStatus()
 
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600" />
       </div>
-    );
+    )
   }
 
   if (!isAuthenticated) {
@@ -147,8 +163,8 @@ export const RequireAuth = ({ children, fallback }: RequireAuthProps) => {
           </div>
         )}
       </div>
-    );
+    )
   }
 
-  return <>{children}</>;
-};
+  return <>{children}</>
+}

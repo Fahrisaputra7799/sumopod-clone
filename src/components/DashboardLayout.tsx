@@ -13,39 +13,32 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
     { id: "affiliate", name: "Affiliate", path: "/dashboard/affiliate" },
     { id: "billing", name: "Billing", path: "/dashboard/billing" },
     { id: "settings", name: "Settings", path: "/dashboard/settings" },
+    { id: "support", name: "Support", path: "/dashboard/support" },
     { id: "beli-emas", name: "Beli Emas", path: "/dashboard/beli-emas" },
-    { id: "support", name: "Support", path: "/dashboard/support" }
   ];
 
-  const handleLogout = () => {
+  function handleLogout() {
     // Clear any stored user data
     localStorage.removeItem("user");
     sessionStorage.removeItem("user");
     // Redirect to login page
-    window.location.href = "/login";
+    window.location.href = "/";
   };
 
   return (
     <div
-      className="flex bg-gray-200"
-      style={{ minHeight: "100vh", minWidth: "1024px" }}
+      className="flex bg-gray-200 min-h-screen"
     >
       {/* Sidebar */}
       <aside
         className="bg-white border-r border-gray-400 py-6 px-4"
-        style={{ width: "256px", minHeight: "100vh" }}
       >
-        <div className="flex flex-col h-full">
+        <div className="flex flex-col h-full w-60">
           {/* Logo */}
           <Link
             to="/"
             className="flex items-center text-xl font-bold text-gray-800 mb-8 px-2"
           >
-            <img
-              src="https://placehold.co/24x24/000000/FFFFFF?text=S"
-              alt="Logo"
-              className="w-6 h-6 mr-2"
-            />
             Sumo<span className="text-blue-700">Pod</span>
           </Link>
 
