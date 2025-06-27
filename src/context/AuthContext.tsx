@@ -1,20 +1,25 @@
 import { createContext, useContext, useState, useEffect } from 'react'
 import type { ReactNode } from 'react'
+import { supabase, isSupabaseConfigured } from '../lib/supabase'
+import type { Session } from '@supabase/supabase-js'
 
 // ============================================================================
 // TYPES & INTERFACES
 // ============================================================================
 
 export interface User {
+  id: string
   email: string
-  name: string
-  id?: string
+  name?: string
+  created_at?: string
 }
 
 interface AuthContextType {
   user: User | null
-  login: (userData: User) => void
-  logout: () => void
+  session: Session | null
+  signUp: (email: string, password: string) => Promise<{ error: any }>
+  signIn: (email: string, password: string) => Promise<{ error: any }>
+  signOut: () => Promise<{ error: any }>
   isLoading: boolean
 }
 
@@ -26,12 +31,6 @@ interface RequireAuthProps {
   children: ReactNode
   fallback?: ReactNode
 }
-
-// ============================================================================
-// CONSTANTS
-// ============================================================================
-
-const USER_STORAGE_KEY = 'sumopod_user'
 
 // ============================================================================
 // CONTEXT CREATION
@@ -52,12 +51,13 @@ export const useAuth = () => {
 }
 
 export const useAuthStatus = () => {
-  const { user, isLoading } = useAuth()
+  const { user, session, isLoading } = useAuth()
 
   return {
-    isAuthenticated: !!user,
+    isAuthenticated: !!user && !!session,
     isLoading,
-    user
+    user,
+    session
   }
 }
 
@@ -67,60 +67,101 @@ export const useAuthStatus = () => {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null)
+  const [session, setSession] = useState<Session | null>(null)
   const [isLoading, setIsLoading] = useState(true)
 
-  // Load user from localStorage on mount
+  // Initialize auth state and listen for changes
   useEffect(() => {
-    try {
-      const savedUser = localStorage.getItem(USER_STORAGE_KEY)
-      if (savedUser) {
-        const parsedUser = JSON.parse(savedUser)
-        setUser(parsedUser)
+    // Get initial session
+    supabase.auth.getSession().then(({ data: { session } }) => {
+      setSession(session)
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || '',
+          created_at: session.user.created_at
+        })
       }
-    } catch (error) {
-      console.error('Error loading user from localStorage:', error)
-      // Clear invalid data
-      localStorage.removeItem(USER_STORAGE_KEY)
-    } finally {
       setIsLoading(false)
-    }
+    })
+
+    // Listen for auth changes
+    const {
+      data: { subscription },
+    } = supabase.auth.onAuthStateChange((_event, session) => {
+      setSession(session)
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || '',
+          created_at: session.user.created_at
+        })
+      } else {
+        setUser(null)
+      }
+      setIsLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
   }, [])
 
-  const login = (userData: User) => {
+  // Sign up function
+  const signUp = async (email: string, password: string) => {
+    if (!isSupabaseConfigured) {
+      return { error: { message: 'Supabase belum dikonfigurasi. Silakan setup environment variables terlebih dahulu.' } }
+    }
+
     try {
-      const userWithMetadata = {
-        ...userData,
-        id: userData.id || Date.now().toString(),
-        loginTime: new Date().toISOString()
-      }
-
-      setUser(userWithMetadata)
-      localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userWithMetadata))
-
-      // Optional: Track login event
-      console.log('User logged in:', userWithMetadata.email)
+      const { error } = await supabase.auth.signUp({
+        email,
+        password,
+      })
+      return { error }
     } catch (error) {
-      console.error('Error during login:', error)
+      return { error }
     }
   }
 
-  const logout = () => {
-    try {
-      setUser(null)
-      localStorage.removeItem(USER_STORAGE_KEY)
+  // Sign in function
+  const signIn = async (email: string, password: string) => {
+    if (!isSupabaseConfigured) {
+      return { error: { message: 'Supabase belum dikonfigurasi. Silakan setup environment variables terlebih dahulu.' } }
+    }
 
-      // Optional: Track logout event
-      console.log('User logged out')
+    try {
+      const { error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
+      return { error }
     } catch (error) {
-      console.error('Error during logout:', error)
+      return { error }
+    }
+  }
+
+  // Sign out function
+  const signOut = async () => {
+    if (!isSupabaseConfigured) {
+      return { error: { message: 'Supabase belum dikonfigurasi.' } }
+    }
+
+    try {
+      const { error } = await supabase.auth.signOut()
+      return { error }
+    } catch (error) {
+      return { error }
     }
   }
 
   // Context value
   const value: AuthContextType = {
     user,
-    login,
-    logout,
+    session,
+    signUp,
+    signIn,
+    signOut,
     isLoading
   }
 

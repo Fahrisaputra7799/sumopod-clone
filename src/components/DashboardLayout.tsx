@@ -1,4 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 interface DashboardLayoutProps {
   children: React.ReactNode;
@@ -6,23 +7,26 @@ interface DashboardLayoutProps {
 
 export default function DashboardLayout({ children }: DashboardLayoutProps) {
   const location = useLocation();
+  const navigate = useNavigate();
+  const { user, signOut } = useAuth();
 
   const sidebarItems = [
     { id: "service", name: "Services", path: "/dashboard/services" },
-    { id: "beli-emas", name: "Beli Emas", path: "/dashboard/beli-emas" },
     { id: "ai", name: "AI", path: "/dashboard/ai" },
     { id: "affiliate", name: "Affiliate", path: "/dashboard/affiliate" },
+    { id: "beli-emas", name: "Beli Emas", path: "/dashboard/beli-emas" },
     { id: "billing", name: "Billing", path: "/dashboard/billing" },
     { id: "settings", name: "Settings", path: "/dashboard/settings" },
     { id: "support", name: "Support", path: "/dashboard/support" },
   ];
 
-  function handleLogout() {
-    // Clear any stored user data
-    localStorage.removeItem("user");
-    sessionStorage.removeItem("user");
-    // Redirect to login page
-    window.location.href = "/";
+  const handleLogout = async () => {
+    try {
+      await signOut();
+      navigate("/");
+    } catch (error) {
+      console.error("Error signing out:", error);
+    }
   };
 
   return (
@@ -106,11 +110,15 @@ export default function DashboardLayout({ children }: DashboardLayoutProps) {
         >
           <div className="flex items-center" style={{ gap: "12px" }}>
             <div className="text-right">
-              <div className="text-sm font-semibold text-gray-800">User</div>
-              <div className="text-xs text-gray-600">user@example.com</div>
+              <div className="text-sm font-semibold text-gray-800">
+                {user?.name || 'User'}
+              </div>
+              <div className="text-xs text-gray-600">
+                {user?.email || 'user@example.com'}
+              </div>
             </div>
             <img
-              src="https://placehold.co/32x32/FFD700/000000?text=U"
+              src={`https://placehold.co/32x32/FFD700/000000?text=${(user?.name || user?.email || 'U').charAt(0).toUpperCase()}`}
               alt="User Avatar"
               className="w-8 h-8 border border-gray-400"
             />
