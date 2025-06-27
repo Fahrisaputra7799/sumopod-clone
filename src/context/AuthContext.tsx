@@ -14,12 +14,20 @@ export interface User {
   created_at?: string
 }
 
+interface AuthError {
+  message: string
+}
+
+interface AuthResult {
+  error: AuthError | null
+}
+
 interface AuthContextType {
   user: User | null
   session: Session | null
-  signUp: (email: string, password: string) => Promise<{ error: any }>
-  signIn: (email: string, password: string) => Promise<{ error: any }>
-  signOut: () => Promise<{ error: any }>
+  signUp: (email: string, password: string) => Promise<AuthResult>
+  signIn: (email: string, password: string) => Promise<AuthResult>
+  signOut: () => Promise<AuthResult>
   isLoading: boolean
 }
 
@@ -108,7 +116,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
   }, [])
 
   // Sign up function
-  const signUp = async (email: string, password: string) => {
+  const signUp = async (email: string, password: string): Promise<AuthResult> => {
     if (!isSupabaseConfigured) {
       return { error: { message: 'Supabase belum dikonfigurasi. Silakan setup environment variables terlebih dahulu.' } }
     }
@@ -118,14 +126,14 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email,
         password,
       })
-      return { error }
+      return { error: error ? { message: error.message } : null }
     } catch (error) {
-      return { error }
+      return { error: { message: error instanceof Error ? error.message : 'Unknown error occurred' } }
     }
   }
 
   // Sign in function
-  const signIn = async (email: string, password: string) => {
+  const signIn = async (email: string, password: string): Promise<AuthResult> => {
     if (!isSupabaseConfigured) {
       return { error: { message: 'Supabase belum dikonfigurasi. Silakan setup environment variables terlebih dahulu.' } }
     }
@@ -135,23 +143,23 @@ export function AuthProvider({ children }: AuthProviderProps) {
         email,
         password,
       })
-      return { error }
+      return { error: error ? { message: error.message } : null }
     } catch (error) {
-      return { error }
+      return { error: { message: error instanceof Error ? error.message : 'Unknown error occurred' } }
     }
   }
 
   // Sign out function
-  const signOut = async () => {
+  const signOut = async (): Promise<AuthResult> => {
     if (!isSupabaseConfigured) {
       return { error: { message: 'Supabase belum dikonfigurasi.' } }
     }
 
     try {
       const { error } = await supabase.auth.signOut()
-      return { error }
+      return { error: error ? { message: error.message } : null }
     } catch (error) {
-      return { error }
+      return { error: { message: error instanceof Error ? error.message : 'Unknown error occurred' } }
     }
   }
 

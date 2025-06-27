@@ -24,7 +24,7 @@ export function LoginForm() {
         // Redirect to dashboard on successful login
         navigate("/dashboard");
       }
-    } catch (err) {
+    } catch {
       setError("An unexpected error occurred");
     } finally {
       setLoading(false);

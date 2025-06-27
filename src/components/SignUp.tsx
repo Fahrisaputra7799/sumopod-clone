@@ -43,7 +43,7 @@ export function SignUp() {
           navigate("/login");
         }, 2000);
       }
-    } catch (err) {
+    } catch {
       setError("Terjadi kesalahan yang tidak terduga");
     } finally {
       setLoading(false);
